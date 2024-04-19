@@ -13,6 +13,7 @@ namespace WebAppStudy.Repository
         {
             this._context = context;
         }
+
         public bool Add(Club club)
         {
             _context.Add(club);
@@ -34,6 +35,12 @@ namespace WebAppStudy.Repository
         {
             return await _context.Clubs.Include(i => i.Adress).FirstOrDefaultAsync(i => i.Id == id);
         }
+        
+        public async Task<Club> GetByIdAsyncNoTracking(int id)
+        {
+            return await _context.Clubs.Include(i => i.Adress).AsNoTracking().FirstOrDefaultAsync(i => i.Id == id);
+        }
+        
 
         public async Task<IEnumerable<Club>> GetClubByCity(string city)
         {
@@ -48,7 +55,8 @@ namespace WebAppStudy.Repository
 
         public bool Update(Club club)
         {
-            throw new NotImplementedException();
+            _context.Update(club);
+            return Save();
         }
     }
 }
